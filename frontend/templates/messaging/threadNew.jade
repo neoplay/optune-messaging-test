@@ -1,0 +1,23 @@
+extends ../layout.jade
+
+block content
+
+    form.form-horizontal(method="POST", action="/messaging/new")
+        div.form-group
+            label(class="col-sm-2 control-label") Absender
+            div.col-sm-10
+                input.form-control(name="from", disabled="disabled", value="#{user.name}")
+        div.form-group
+            label(class="col-sm-2 control-label") Empfänger
+            div.col-sm-10
+                input.form-control(name="to")
+        div.form-group
+            label(class="col-sm-2 control-label") Nachricht
+            div.col-sm-10
+                textarea.form-control(name="message")
+        div.from-group
+            div.col-sm-2
+            div.col-sm-5
+                button(class="btn btn-primary", type="submit") Absenden
+            div.col-sm-5.text-right
+                a(class="btn btn-default", href="/messaging") zurück zum Posteingang

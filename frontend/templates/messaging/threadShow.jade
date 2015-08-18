@@ -1,0 +1,43 @@
+extends ../layout.jade
+
+block content
+
+    if !thread
+        p Nachricht nicht gefunden.
+    else
+
+        div.row
+            div.col-sm-12
+                h3 Antworten
+                form.form-horizontal(method="POST", action="/messaging/#{thread._id}")
+                    div.form-group
+                        label(class="col-sm-2 control-label") Nachricht
+                        div.col-sm-10
+                            textarea.form-control(name="message")
+                    div.from-group
+                        div.col-sm-2
+                        div.col-sm-5
+                            button(class="btn btn-primary", type="submit") Absenden
+
+        div.row
+            div.col-sm-12
+                hr
+                h3 Nachrichten
+                each message, index in thread.messages
+                    div.row
+                        div.col-sm-3
+                            span #{moment(message.sendDate).format('DD. MMM YYYY, HH:mm')} Uhr&nbsp;&nbsp;&nbsp;
+                            if readDate
+                                span.btn.btn-xs.btn-primary gelesen
+                            else
+                                span.btn.btn-xs.btn-info ungelesen
+                        div.col-sm-3
+                            | von #{message.from}
+                            br
+                            | an #{message.from}
+                        div.col-sm-6 #{message.message}
+
+    div.row
+        div.col-sm-12
+            hr
+            a(class="btn btn-default", href="/messaging") zurück zum Posteingang

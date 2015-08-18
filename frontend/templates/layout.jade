@@ -14,6 +14,20 @@ html
 
                     h1 optune Messaging
 
+                    if user
+                        ul
+                            li Logged in as: #{user.name}
+                            li
+                                a(href='/logout') Logout
+                        p
+                            a(class="btn btn-primary", href="/messaging") Zum Posteingang
+                    else
+                        form(method='post', action='/user/add')
+                            input(type='text', name='name')
+                            input(type='submit', value='Login or Create user')
+
+                    hr
+
                     block content
 
         script(type='text/javascript', src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')

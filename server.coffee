@@ -3,9 +3,6 @@ mongoose = require 'mongoose'
 MongoSessionStore = require('session-mongoose')(require('connect'))
 sessionStore = new MongoSessionStore(url: 'mongodb://127.0.0.1/optune-messaging-test')
 
-
-cUser = require './user/controllers/index'
-
 PORT        = process.env.PORT || 3000
 
 app = express()
@@ -29,8 +26,13 @@ app.use '/img', express.static(__dirname + '/frontend/images')
 app.use '/theme', express.static(__dirname + '/frontend/theme')
 app.use '/fonts', express.static(__dirname + '/frontend/fonts')
 
-# user controller
-require('./user/controllers/index') app
+# moment
+app.locals.moment = require 'moment'
+
+# user module
+require('./user') app
+# messaging module
+require('./optune-messaging') app
 
 # error 404
 app.use (req, res, next) ->
@@ -42,8 +44,6 @@ app.use (err, req, res, next) ->
     console.error(err.stack);
     res.status 500
     res.render '500'
-
-########
 
 if not module.parent
     app.listen app.get('port')

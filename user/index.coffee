@@ -1,16 +1,13 @@
-User = require '../models/user'
 mongoose = require 'mongoose'
-messaging = require('../../optune-messaging/index')
+User = require './models/user'
 
 module.exports = (app) ->
 
     # index
     app.get '/', (req, res) ->
-        #thread = messaging.addThread 'from', 'to', (result) ->
-        #    console.log result
-        res.render 'index', {session: req.session}
+        res.render 'index', {user: req.session.user}
 
-    app.post '/add', (req, res) ->
+    app.post '/user/add', (req, res) ->
         User.findOne {name: req.body.name}, (err, obj) ->
             if err
                 throw err

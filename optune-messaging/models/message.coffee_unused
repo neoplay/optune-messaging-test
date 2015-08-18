@@ -7,10 +7,10 @@ schema = new mongoose.Schema
     readDate:
         type: Date
         default: null
-    sender:
+    from:
         type: String
         required: true
-    recipient:
+    message:
         type: String
         required: true
 

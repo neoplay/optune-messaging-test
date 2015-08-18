@@ -2,20 +2,4 @@ extends layout.jade
 
 block content
 
-    if session.user
-
-        // login status
-        ul
-            li Logged in as: #{session.user.name}
-            li
-                a(href='/logout') Logout
-
-        //messages
-
-
-    else
-
-        //login form
-        form(method='post', action='/add')
-            input(type='text', name='name')
-            input(type='submit', value='Login or Create user')
+    p Startseite....

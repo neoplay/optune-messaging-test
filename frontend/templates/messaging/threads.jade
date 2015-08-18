@@ -1,0 +1,31 @@
+extends ../layout.jade
+
+block content
+
+    if user
+
+        p
+            a(class="btn btn-primary", href="/messaging/new") Neues Thema
+
+        if threads
+
+            each thread, index in threads
+                - lastMessage = thread.messages[(thread.messages.length-1)]
+                div.row
+                    div.col-sm-3 #{moment(lastMessage.sendDate).format('DD. MMM YYYY, HH:mm')} Uhr
+                    div.col-sm-3
+                        | von #{lastMessage.from}
+                        br
+                        | an #{lastMessage.from}
+                    div.col-sm-4 #{lastMessage.message}
+                    div.col-sm-2
+                        if lastMessage.readDate == null && lastMessage.from != user.id
+                            a.btn.btn-xs.btn-warning(href="/messaging/#{thread.id}") ungelesen
+                        a.btn.btn-xs.btn-default(href="/messaging/#{thread.id}") anzeigen
+
+        else
+            p Nachrichten konnten nicht geladen werden.
+
+    else
+
+        p Sie sind nicht eingeloggt.

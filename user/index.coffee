@@ -15,7 +15,6 @@ module.exports = (app) ->
                 req.session.user = {}
                 req.session.user.id = obj._id
                 req.session.user.name = obj.name
-                console.log req.session
                 res.redirect '/'
             else
                 us = new User(name: req.body.name)

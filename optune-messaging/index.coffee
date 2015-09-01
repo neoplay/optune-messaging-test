@@ -32,10 +32,13 @@ module.exports = (app) ->
                 #todo error message
                 res.redirect '/messaging'
             # update readDate
-            for msg in result.messages
+            for msg, i in result.messages
                 if msg.readDate == null && msg.from.localeCompare(req.session.user.id)!=0
-                    #TODO: msg.readDate =
-                    x = 1 #temp
+                    result.messages[i].readDate = new Date
+            messaging.updateThread result._id, result.messages, (success) ->
+                if !success
+                    #todo error message
+                    console.log 'error updateing read date'
             res.render 'messaging/threadShow', {thread: result}
 
     app.post '/messaging/:id', (req, res) ->

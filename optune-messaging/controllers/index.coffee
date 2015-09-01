@@ -5,6 +5,11 @@ module.exports.getThreads = (userid, callback) ->
     Thread.find { $or:[{from:userid}, {to:userid}] }, (err, thrs) ->
         if err then null else callback thrs
 
+module.exports.updateThread = (id, messages, callback) ->
+    query = _id: id
+    Thread.update query, { messages: messages }, (err) ->
+        if err then callback false else callback true
+
 module.exports.addThread = (from, to, message, callback) ->
     msg = {from: from, message: message}
     thr = new Thread(from: from, to: to)

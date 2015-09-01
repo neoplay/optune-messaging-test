@@ -27,14 +27,11 @@ block content
                     div.row
                         div.col-sm-3
                             span #{moment(message.sendDate).format('DD. MMM YYYY, HH:mm')} Uhr&nbsp;&nbsp;&nbsp;
-                            if readDate
-                                span.btn.btn-xs.btn-primary gelesen
+                            if message.readDate instanceof Date
+                                span.label.label-xs.label-default gelesen
                             else
-                                span.btn.btn-xs.btn-info ungelesen
-                        div.col-sm-3
-                            | von #{message.from}
-                            br
-                            | an #{message.from}
+                                span.label.label-xs.label-warning ungelesen
+                        div.col-sm-3 von #{message.from}
                         div.col-sm-6 #{message.message}
 
     div.row

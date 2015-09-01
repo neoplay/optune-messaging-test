@@ -13,7 +13,7 @@ module.exports = (app, userModel = 'User') ->
     # threads
     app.get '/messaging', (req, res) ->
         messaging.getThreads req.session.user.id, (result) ->
-            res.render 'messaging/threads', { threads: result}
+            res.render 'messaging/threads', { threads: result }
 
     # thread : new
     app.get '/messaging/new', (req, res) ->
@@ -41,7 +41,7 @@ module.exports = (app, userModel = 'User') ->
             # preprocess messages
             for msg, i in result.messages
                 # update readDate
-                if msg.readDate == null && msg.from.localeCompare(req.session.user.id)!=0
+                if msg.readDate == null && !(msg.from._id == req.session.user.id)
                     result.messages[i].readDate = new Date
             # save readDate
             messaging.updateThread result._id, result.messages, (success) ->

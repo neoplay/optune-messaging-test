@@ -8,6 +8,10 @@ block content
 
         div.row
             div.col-sm-12
+                h3 Unterhaltung zwischen #{thread.from.name} und #{thread.to.name}
+        div.row
+            div.col-sm-12
+                hr
                 h3 Antworten
                 form.form-horizontal(method="POST", action="/messaging/#{thread._id}")
                     div.form-group
@@ -31,7 +35,7 @@ block content
                                 span.label.label-xs.label-default gelesen
                             else
                                 span.label.label-xs.label-warning ungelesen
-                        div.col-sm-3 von #{message.fromName}
+                        div.col-sm-3 von #{message.from.name}
                         div.col-sm-6 #{message.message}
 
     div.row

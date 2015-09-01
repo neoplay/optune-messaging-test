@@ -14,7 +14,7 @@ block content
                 div.row
                     div.col-sm-3 #{moment(lastMessage.sendDate).format('DD. MMM YYYY, HH:mm')} Uhr
                     div.col-sm-3
-                        | von #{lastMessage.from}
+                        | von #{lastMessage.from.name}
                     div.col-sm-4 #{lastMessage.message}
                     div.col-sm-2
                         if lastMessage.readDate == null && lastMessage.from != user.id

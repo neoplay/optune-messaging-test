@@ -1,4 +1,5 @@
 express  = require 'express'
+flash    = require 'flash'
 mongoose = require 'mongoose'
 MongoSessionStore = require('session-mongoose')(require('connect'))
 sessionStore = new MongoSessionStore(url: 'mongodb://127.0.0.1/optune-messaging-test')
@@ -21,6 +22,8 @@ app.use require('body-parser')()
 app.use require('cookie-parser')('testSecret')
 # express session
 app.use require('express-session')(store: sessionStore)
+# flash
+app.use require('flash')()
 
 app.use '/img', express.static(__dirname + '/frontend/images')
 app.use '/theme', express.static(__dirname + '/frontend/theme')
@@ -40,10 +43,10 @@ app.use (req, res, next) ->
     res.render '404'
 
 # error 500
-app.use (err, req, res, next) ->
-    console.error(err.stack);
-    res.status 500
-    res.render '500'
+#app.use (err, req, res, next) ->
+#    console.error(err.stack);
+#    res.status 500
+#    res.render '500'
 
 if not module.parent
     app.listen app.get('port')

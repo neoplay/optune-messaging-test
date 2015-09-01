@@ -1,4 +1,5 @@
 mongoose = require 'mongoose'
+ObjectId = require('mongoose').Types.ObjectId
 
 schema = new mongoose.Schema
     startDate:
@@ -44,7 +45,11 @@ schema.statics.addThread = (from, to, message, callback) ->
         if err then null else callback thr
 
 schema.statics.getThread = (id, userid, callback) ->
-    this.findOne({_id: id, $or:[{from:userid}, {to:userid}]}).populate('from to messages.from').exec()
+    try
+        objectId = new ObjectId(id)
+    catch
+        callback null
+    this.findOne({_id: objectId, $or:[{from:userid}, {to:userid}]}).populate('from to messages.from').exec()
     .then (thr) ->
         callback thr
     .then null, (err) ->

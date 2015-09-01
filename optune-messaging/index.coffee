@@ -19,8 +19,7 @@ module.exports = (app, userModel = 'User') ->
     app.get '/messaging/new', (req, res) ->
         res.locals.users = User.find { _id: { $ne: req.session.user.id } }, (err, obj) ->
             if err
-                #todo error message
-                console.log 'could not load users' #temp
+                req.flash 'danger', 'Die Empfängerliste konnte nicht geladen werden.'
             res.locals.users = obj
             res.render 'messaging/threadNew', {}
 
@@ -29,15 +28,16 @@ module.exports = (app, userModel = 'User') ->
             if result
                 res.redirect '/messaging/' + result._id
             else
-                #todo error message
-                res.render 'messaging/threadNew', {}
+                req.flash 'danger', 'Der Thread konnte nicht erstellt werden.'
+                res.redirect '/messaging/new'
 
     # thread : show
     app.get '/messaging/:id', (req, res) ->
         Thread.getThread req.params.id, req.session.user.id, (result) ->
-            if !result
-                #todo error message
-                res.redirect '/messaging'
+            if not result
+                # TODO: fix error headers already sent
+                req.flash 'danger', 'Der Thread wurde nicht gefunden.'
+                return res.redirect '/messaging'
             # preprocess messages
             for msg, i in result.messages
                 # update readDate
@@ -46,13 +46,11 @@ module.exports = (app, userModel = 'User') ->
             # save readDate
             result.save (err) ->
                 if err
-                    #todo error message
-                    console.log 'error updateing read date' #temp
+                    req.flash 'danger', 'Einige Nachrichten konnten nicht als gelesen markiert werden.'
                 res.render 'messaging/threadShow', {thread: result}
 
     app.post '/messaging/:id', (req, res) ->
         Thread.addMessage req.params.id, req.session.user.id, req.body.message, (result) ->
             if !result
-                #todo error message
-                console.log 'error' #temp
+                req.flash 'danger', 'Die Nachricht konnte nicht gesendet werden.'
             res.redirect '/messaging/' + req.params.id

@@ -28,6 +28,9 @@ html
 
                     hr
 
+                    while message = flash.shift()
+                        div.alert(class='alert-' + message.type) #{message.message}
+
                     block content
 
         script(type='text/javascript', src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')

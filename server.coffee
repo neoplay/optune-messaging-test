@@ -32,7 +32,7 @@ app.locals.moment = require 'moment'
 # user module
 require('./user') app
 # messaging module
-require('./optune-messaging') app
+require('./optune-messaging') app, 'User'
 
 # error 404
 app.use (req, res, next) ->

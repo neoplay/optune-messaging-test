@@ -1,4 +1,3 @@
-#Message = require '../models/message'
 Thread = require '../models/thread'
 
 module.exports.getThreads = (userid, callback) ->

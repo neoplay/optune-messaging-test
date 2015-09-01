@@ -1,5 +1,6 @@
 mongoose = require 'mongoose'
-messaging = require('./controllers')
+messaging = require './controllers'
+User = require '../user/models/user'
 
 module.exports = (app) ->
 
@@ -15,7 +16,12 @@ module.exports = (app) ->
 
     # thread : new
     app.get '/messaging/new', (req, res) ->
-        res.render 'messaging/threadNew', {}
+        res.locals.users = User.find {}, (err, obj) ->
+            if err
+                #todo error message
+                console.log 'could not load users' #temp
+            res.locals.users = obj
+            res.render 'messaging/threadNew', {}
 
     app.post '/messaging/new', (req, res) ->
         messaging.addThread req.session.user.id, req.body.to, req.body.message, (result) ->
@@ -38,7 +44,7 @@ module.exports = (app) ->
             messaging.updateThread result._id, result.messages, (success) ->
                 if !success
                     #todo error message
-                    console.log 'error updateing read date'
+                    console.log 'error updateing read date' #temp
             res.render 'messaging/threadShow', {thread: result}
 
     app.post '/messaging/:id', (req, res) ->

@@ -10,7 +10,9 @@ block content
         div.form-group
             label(class="col-sm-2 control-label") Empfänger
             div.col-sm-10
-                input.form-control(name="to")
+                select.form-control(name="to")
+                    for user in users
+                        option(value="#{user._id}") #{user.name}
         div.form-group
             label(class="col-sm-2 control-label") Nachricht
             div.col-sm-10

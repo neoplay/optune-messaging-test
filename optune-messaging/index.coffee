@@ -1,5 +1,5 @@
 mongoose = require 'mongoose'
-messaging = require './controllers'
+Thread = require './models/thread'
 
 module.exports = (app, userModel = 'User') ->
 
@@ -12,7 +12,7 @@ module.exports = (app, userModel = 'User') ->
 
     # threads
     app.get '/messaging', (req, res) ->
-        messaging.getThreads req.session.user.id, (result) ->
+        Thread.getThreads req.session.user.id, (result) ->
             res.render 'messaging/threads', { threads: result }
 
     # thread : new
@@ -25,7 +25,7 @@ module.exports = (app, userModel = 'User') ->
             res.render 'messaging/threadNew', {}
 
     app.post '/messaging/new', (req, res) ->
-        messaging.addThread req.session.user.id, req.body.to, req.body.message, (result) ->
+        Thread.addThread req.session.user.id, req.body.to, req.body.message, (result) ->
             if result
                 res.redirect '/messaging/' + result._id
             else
@@ -34,7 +34,7 @@ module.exports = (app, userModel = 'User') ->
 
     # thread : show
     app.get '/messaging/:id', (req, res) ->
-        messaging.getThread req.params.id, req.session.user.id, (result) ->
+        Thread.getThread req.params.id, req.session.user.id, (result) ->
             if !result
                 #todo error message
                 res.redirect '/messaging'
@@ -44,14 +44,14 @@ module.exports = (app, userModel = 'User') ->
                 if msg.readDate == null && !(msg.from._id == req.session.user.id)
                     result.messages[i].readDate = new Date
             # save readDate
-            messaging.updateThread result._id, result.messages, (success) ->
+            Thread.updateThread result._id, result.messages, (success) ->
                 if !success
                     #todo error message
                     console.log 'error updateing read date' #temp
                 res.render 'messaging/threadShow', {thread: result}
 
     app.post '/messaging/:id', (req, res) ->
-        messaging.addMessage req.params.id, req.session.user.id, req.body.message, (result) ->
+        Thread.addMessage req.params.id, req.session.user.id, req.body.message, (result) ->
             if !result
                 #todo error message
                 console.log 'error' #temp

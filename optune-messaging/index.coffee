@@ -41,11 +41,11 @@ module.exports = (app, userModel = 'User') ->
             # preprocess messages
             for msg, i in result.messages
                 # update readDate
-                if msg.readDate == null && !(msg.from._id == req.session.user.id)
+                if msg.readDate == null && !(msg.from._id.toString() is req.session.user.id.toString())
                     result.messages[i].readDate = new Date
             # save readDate
-            Thread.updateThread result._id, result.messages, (success) ->
-                if !success
+            result.save (err) ->
+                if err
                     #todo error message
                     console.log 'error updateing read date' #temp
                 res.render 'messaging/threadShow', {thread: result}

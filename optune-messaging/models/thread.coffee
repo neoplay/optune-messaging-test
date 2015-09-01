@@ -60,10 +60,4 @@ schema.statics.addMessage = (id, from, message, callback) ->
         thr.save (err) ->
             if err then null else callback true
 
-schema.statics.updateThread = (id, messages, callback) ->
-    query = _id: id
-    this.update query, { messages: messages }, (err) ->
-        if err then callback false else callback true
-
-
 module.exports = mongoose.model('Thread', schema)
